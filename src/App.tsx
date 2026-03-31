@@ -51,12 +51,20 @@ function App() {
     );
   };
 
+  // 選択中項目数
+  const completedCount = todos.filter((todo) => todo.completed).length;
+
   return (
     <div>
       <input type="text" ref={todoNameRef} />
       <button onClick={handleAddTodo}>追加</button>
       <button onClick={handleTodoClear}>削除</button>
-      <div>未完了タスク：{todos.filter((todo) => !todo.completed).length}</div>
+      <div>
+        全タスク：{todos.length}件
+        {completedCount > 0 && `（選択中：${completedCount}件）`}
+        {/* 条件 && 表示したい内容 */}
+      </div>
+      <hr />
       {/* TodoList.tsxに引数渡す(todos) */}
       <TodoList todos={todos} toggleTodo={toggleTodo} />{" "}
     </div>
