@@ -18,6 +18,7 @@ React + TypeScriptで作成したシンプルなTodoアプリ
 
 ## 実行方法
 
+以下を実行
 ```bash
 npm install
 npm run dev
