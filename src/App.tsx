@@ -23,7 +23,7 @@ function App() {
     // nullチェック
     if (!todoNameRef.current) return;
 
-    const name = todoNameRef.current.value;
+    const name = todoNameRef.current.value.trim();
 
     // Todo追加
     setTodos((prevTodos) =>
@@ -37,7 +37,7 @@ function App() {
     todoNameRef.current.focus();
   };
 
-  // タスクの削除
+  // チェックしたタスクの削除
   const handleTodoClear = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => !todo.completed));
   };
@@ -51,22 +51,47 @@ function App() {
     );
   };
 
+  // タスク全選択
+  const handleSelectAllCheck = () => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => ({ ...todo, completed: true })),
+    );
+  };
+
+  // タスク全解除
+  const handleClearAllCheck = () => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) => ({ ...todo, completed: false })),
+    );
+  };
+
   // 選択中項目数
   const completedCount = todos.filter((todo) => todo.completed).length;
 
   return (
     <div>
-      <input type="text" ref={todoNameRef} />
+      <input type="text" ref={todoNameRef} placeholder="タスクを入力" />
       <button onClick={handleAddTodo}>追加</button>
-      <button onClick={handleTodoClear}>削除</button>
+      <button onClick={handleTodoClear} disabled={completedCount === 0}>
+        選択したタスクを削除
+      </button>
+      <button onClick={handleSelectAllCheck} disabled={todos.length === 0}>
+        全選択
+      </button>
+      <button onClick={handleClearAllCheck} disabled={completedCount === 0}>
+        全解除
+      </button>
       <div>
         全タスク：{todos.length}件
         {completedCount > 0 && `（選択中：${completedCount}件）`}
         {/* 条件 && 表示したい内容 */}
       </div>
       <hr />
-      {/* TodoList.tsxに引数渡す(todos) */}
-      <TodoList todos={todos} toggleTodo={toggleTodo} />{" "}
+      {todos.length === 0 ? (
+        <div>タスクがありません</div>
+      ) : (
+        <TodoList todos={todos} toggleTodo={toggleTodo} />
+      )}
     </div>
   );
 }
